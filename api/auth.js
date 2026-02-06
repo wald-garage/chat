@@ -1,10 +1,13 @@
 const users=[
   {username:"andi",password:"andi123"},
-  {username:"budi",password:"budi123"},
-  {username:"caca",password:"caca123"},
-  {username:"dedi",password:"dedi123"},
-  {username:"eka",password:"eka123"},
-  {username:"fajar",password:"fajar123"}
+  {username:"luna",password:"moonhae"},
+  {username:"farel",password:"for real"},
+  {username:"arinal",password:"tahutek"},
+  {username:"farhan",password:"nanags"},
+  {username:"arga",password:"amir"},
+  {username:"unzila",password:"zilzil"},
+  {username:"anu1",password:"anu1"}
+
 ];
 
 export default function handler(req,res){
