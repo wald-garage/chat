@@ -1,54 +1,57 @@
-let user = "";
-let userColor = randomColor();
+let user="";
+let interval=null;
 
-function startChat() {
-  user = document.getElementById("username").value;
-  if (!user) return alert("Isi nama dulu!");
+async function login(){
+  const password=document.getElementById("password").value;
+  if(!password) return alert("Masukkan password!");
+
+  const res=await fetch("/api/auth",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({password})
+  });
+
+  const data=await res.json();
+  if(!data.success) return alert("Password salah!");
+
+  user=data.username;
 
   document.getElementById("login").classList.add("hidden");
   document.getElementById("chat").classList.remove("hidden");
 
   loadMessages();
-  setInterval(loadMessages, 2000);
+  if(interval) clearInterval(interval);
+  interval=setInterval(loadMessages,3000);
 }
 
-async function sendMessage() {
-  const text = document.getElementById("text").value;
-  if (!text) return;
+async function sendMessage(){
+  const input=document.getElementById("text");
+  const text=input.value.trim();
+  if(!text) return;
 
-  await fetch("/api/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user, text, color: userColor })
+  await fetch("/api/chat",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({user,text,time:Date.now()})
   });
 
-  document.getElementById("text").value = "";
+  input.value="";
   loadMessages();
 }
 
-async function loadMessages() {
-  const res = await fetch("/api/chat");
-  const data = await res.json();
+async function loadMessages(){
+  const res=await fetch("/api/chat");
+  const data=await res.json();
 
-  const box = document.getElementById("messages");
-  box.innerHTML = "";
+  const box=document.getElementById("messages");
+  box.innerHTML="";
 
-  data.forEach(m => {
-    const div = document.createElement("div");
-    div.className = "msg " + (m.user === user ? "me" : "other");
-
-    div.innerHTML = `
-      <div class="user" style="color:${m.color || "#38bdf8"}">${m.user}</div>
-      <div>${m.text}</div>
-    `;
-
+  data.forEach(m=>{
+    const div=document.createElement("div");
+    div.className="bubble "+(m.user===user?"me":"other");
+    div.innerHTML=`<div class="name">${m.user}</div>${m.text}`;
     box.appendChild(div);
   });
 
-  box.scrollTop = box.scrollHeight;
-}
-
-function randomColor() {
-  const colors = ["#38bdf8", "#a78bfa", "#fb7185", "#34d399", "#facc15"];
-  return colors[Math.floor(Math.random() * colors.length)];
+  box.scrollTop=box.scrollHeight;
 }

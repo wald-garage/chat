@@ -1,12 +1,15 @@
+let messages=[];
+const DAY=24*60*60*1000;
 
-let messages = [];
+export default function handler(req,res){
+  const now=Date.now();
+  messages=messages.filter(m=>now-m.time<DAY);
 
-export default function handler(req, res) {
-  if (req.method === "POST") {
-    const { user, text } = req.body;
-    messages.push({ user, text });
-    if (messages.length > 50) messages.shift();
-    return res.status(200).json({ ok: true });
+  if(req.method==="POST"){
+    const {user,text,time}=req.body;
+    messages.push({user,text,time});
+    return res.json({ok:true});
   }
-  res.status(200).json(messages);
+
+  res.json(messages);
 }
