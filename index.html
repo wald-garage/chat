@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Realtime Simple Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card" id="login">
+  <h2>💬 Simple Web Chat</h2>
+  <input id="username" placeholder="Nama kamu..." />
+  <button onclick="startChat()">Masuk Chat</button>
+</div>
+
+<div class="card hidden" id="chat">
+  <div class="header">💬 Public Chat</div>
+  <div id="messages"></div>
+  <div class="input-box">
+    <input id="text" placeholder="Tulis pesan..." />
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
